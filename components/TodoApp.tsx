@@ -4,8 +4,11 @@ import TodoForm from "@/components/TodoForm"
 import TodoList from "@/components/TodoList"
 const TodoApp = () => {
     const [tasks, setTasks] = useState<Task[]>(() => {
-        const stored = localStorage.getItem('tasks');
-        return stored ? JSON.parse(stored) : []
+        if(typeof(window) !== 'undefined'){
+            const stored = localStorage.getItem('tasks');
+            return stored ? JSON.parse(stored) : []
+        }
+        return [];
     })
     useEffect(()=>{
         localStorage.setItem('tasks', JSON.stringify(tasks));

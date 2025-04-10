@@ -35,7 +35,9 @@ const TodoForm: React.FC<TodoFormProps> = ({tasks, setTasks}) => {
             tasks.push(newTask);
             
             // save array to localStorage
-            localStorage.setItem('tasks', JSON.stringify(tasks));
+            if(typeof(window) !== 'undefined'){
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
             
             // remove Error
             setError('');

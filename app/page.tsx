@@ -1,8 +1,11 @@
+import Navbar from "@/components/Navbar"
+import TodoApp from "@/components/TodoApp";
 
 export default function Home() {
   return (
-    <div>
-      <h1>To do app</h1>
+    <div className="container max-w-7xl m-auto px-4">
+      <Navbar />
+      <TodoApp />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import  React, {useState} from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { toast } from "sonner"
 
 type TodoFormProps = {
     tasks: Task[],
@@ -21,12 +22,20 @@ const TodoForm: React.FC<TodoFormProps> = ({tasks, setTasks}) => {
         e.preventDefault();
         // validate task field
         if(!(title === '' || title === null)){
+            // get current date
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+
+            const formattedDate = `${day}/${month}/${year}`
+
             // create new object
             let newTask: Task = {
                 id: Date.now(),
                 title: title,
                 completed: false,
-                date: new Date('Y-m-d H:i:s')
+                date: formattedDate
             }
             // keep all the previous tasks and add a new one
             setTasks([...tasks, newTask]);
@@ -39,6 +48,15 @@ const TodoForm: React.FC<TodoFormProps> = ({tasks, setTasks}) => {
                 localStorage.setItem('tasks', JSON.stringify(tasks));
             }
             
+            // show toast
+            toast("Task has been created.",{
+                description: "Task added to the local storage",
+                action:{
+                    label:"Close",
+                    onClick: () => console.log('close')
+                }
+            })
+
             // remove Error
             setError('');
 
@@ -53,7 +71,7 @@ const TodoForm: React.FC<TodoFormProps> = ({tasks, setTasks}) => {
 
     return ( 
         <form action="#" onSubmit={handleFormSubmit} className="max-w-lg m-auto py-12">
-            {error !== '' ? <p className="p-4 bg-red-600/30 text-red-600 rounded-lg mb-4 text-sm">{error}</p> : ''}
+            {error !== '' ? <p className="p-4 bg-red-600/20 dark:bg-red-600/30 border dark:border-red-600 text-red-600 rounded-lg mb-4 text-sm">{error}</p> : ''}
             <div className="mb-4">
                 <Label htmlFor="todo" className="text-lg font-semibold">Add a new task</Label>
                 <Input id="todo" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What do you need to do?" className="mt-2" />
